@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnsec-proxy
+  labels:
+    app: mnsec-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mnsec-proxy
+  template:
+    metadata:
+      name: mnsec-proxy
+      labels:
+        app: mnsec-proxy
+    spec:
+      containers:
+      - name: nginx
+        image: debian:12
+        command: ["/usr/bin/tail", "-f", "/dev/null"]
+        ports:
+        - containerPort: 443
+      - name: auth-service
+        image: python:3.11
+        command: ["/usr/bin/tail", "-f", "/dev/null"]
+        ports:
+        - containerPort: 5000
+      - name: kubectl-service
+        image: debian:12
+        command: ["/usr/bin/tail", "-f", "/dev/null"]
+        ports:
+        - containerPort: 8001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnsec-proxy-service
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: mnsec-proxy
+  ports:
+  - protocol: TCP
+    port: 443
+    targetPort: 443
+    name: svc-mnsec-proxy
