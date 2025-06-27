@@ -5,6 +5,6 @@ RUN apt-get update \
  && curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl \
  && chmod +x /usr/local/bin/kubectl
 
-EXPOSE 8001
+EXPOSE 8002
 
-CMD ["kubectl", "proxy", "--port=8001", "--reject-paths='^/api/.*/pods/.*/attach'"]
+CMD ["kubectl", "proxy", "--port=8002", "--reject-paths='^/api/.*/pods/.*/attach'"]
