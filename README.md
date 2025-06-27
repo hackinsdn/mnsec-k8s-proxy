@@ -48,11 +48,11 @@ fi
 TODO: export ca.crt to configmaps
 
 ```
-kubectl exec -it $MNSEC_PROXY --container nginx -- bash -c "apt-get update && apt-get install -y --no-install-recommends nginx libnginx-mod-http-lua && service nginx start"
-kubectl cp server-chain.crt $MNSEC_PROXY:/etc/nginx/server-chain.crt --container nginx
-kubectl cp server.key $MNSEC_PROXY:/etc/nginx/server.key --container nginx
+kubectl exec -it $MNSEC_PROXY --container nginx -- bash -c "apt-get update && apt-get install -y --no-install-recommends nginx libnginx-mod-http-lua && mkdir -p /etc/nginx/ssl && service nginx start"
+kubectl cp server-chain.crt $MNSEC_PROXY:/etc/nginx/ssl/server-chain.crt --container nginx
+kubectl cp server.key $MNSEC_PROXY:/etc/nginx/ssl/server.key --container nginx
+kubectl cp dhparams.pem $MNSEC_PROXY:/etc/nginx/ssl/dhparam.pem --container nginx
 kubectl cp get_req_body.lua $MNSEC_PROXY:/etc/nginx/get_req_body.lua --container nginx
-kubectl cp dhparams.pem $MNSEC_PROXY:/etc/nginx/dhparam.pem --container nginx
 kubectl cp nginx.conf $MNSEC_PROXY:/etc/nginx/nginx.conf --container nginx
 
 kubectl exec -it $MNSEC_PROXY --container nginx -- bash -c "service nginx start"
